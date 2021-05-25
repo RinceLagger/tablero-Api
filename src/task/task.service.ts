@@ -46,7 +46,7 @@ export class TaskService {
     try {
       const { list } = await this.taskModel.findById(taskID);
       await this.taskModel.findOneAndDelete({ _id: taskID });
-      this.listService.deleteTask(list, taskID);
+      await this.listService.deleteTask(list, taskID);
     } catch (error) {
       return null;
     }

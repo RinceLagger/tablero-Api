@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { TableroDocument } from './schema/tablero.schema';
+import { Tablero, TableroDocument } from './schema/tablero.schema';
 import { TableroDTO } from './dto/tablero.dto';
 import { List } from 'src/list/schema/list.schema';
 
@@ -62,6 +62,23 @@ export class TableroService {
         { new: true },
       );
       return tablero;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async deleteListFromTablero(
+    tableroID: Tablero,
+    listID: number,
+  ): Promise<void> | null {
+    try {
+      await this.tableroModel.findByIdAndUpdate(
+        tableroID,
+        {
+          $pull: { lists: listID },
+        },
+        { new: true },
+      );
     } catch (error) {
       return null;
     }

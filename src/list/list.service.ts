@@ -85,9 +85,10 @@ export class ListService {
 
   async deleteList(listID: number): Promise<void> | null {
     try {
-      const { tasks } = await this.listModel.findById(listID);
+      const { tasks, tablero } = await this.listModel.findById(listID);
       await this.listModel.findOneAndDelete({ _id: listID });
       await this.taskService.deleteTaskArray(tasks);
+      await this.tableroService.deleteListFromTablero(tablero, listID);
     } catch (error) {
       return null;
     }
