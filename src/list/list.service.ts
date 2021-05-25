@@ -22,4 +22,37 @@ export class ListService {
       return null;
     }
   }
+
+  async getLists(): Promise<ListDocument[]> | null {
+    try {
+      const lists = await this.listModel.find();
+      return lists;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async getList(listID: number): Promise<ListDocument> | null {
+    try {
+      const list = await this.listModel.findById(listID);
+      return list;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async addTask(listID: number, taskID: number): Promise<ListDocument> | null {
+    try {
+      const list = await this.listModel.findByIdAndUpdate(
+        listID,
+        {
+          $push: { tasks: taskID },
+        },
+        { new: true },
+      );
+      return list;
+    } catch (error) {
+      return null;
+    }
+  }
 }

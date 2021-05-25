@@ -12,5 +12,6 @@ import { TableroModule } from 'src/tablero/tablero.module';
   ],
   providers: [ListService],
   controllers: [ListController],
+  exports: [ListService],
 })
 export class ListModule {}

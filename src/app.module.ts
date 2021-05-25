@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TableroModule } from './tablero/tablero.module';
 import { ListModule } from './list/list.module';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ListModule } from './list/list.module';
       useNewUrlParser: true,
     }),
     ListModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],
