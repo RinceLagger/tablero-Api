@@ -11,6 +11,7 @@ import { TaskService } from 'src/task/task.service';
 export class ListService {
   constructor(
     @InjectModel('List') private listModel: Model<ListDocument>,
+    @Inject(forwardRef(() => TableroService))
     private tableroService: TableroService,
     @Inject(forwardRef(() => TaskService))
     private taskService: TaskService,
@@ -69,7 +70,7 @@ export class ListService {
     }
   }
 
-  async deleteTask(listID: List, taskID: number): Promise<void> | null {
+  async deleteTaskFromList(listID: List, taskID: number): Promise<void> | null {
     try {
       await this.listModel.findByIdAndUpdate(
         listID,
@@ -91,6 +92,19 @@ export class ListService {
       await this.tableroService.deleteListFromTablero(tablero, listID);
     } catch (error) {
       return null;
+    }
+  }
+
+  async deleteListArray(lists: List[]) {
+    //console.log(lists);
+    try {
+      lists.forEach(async (list) => {
+        await this.taskService.deleteTaskArray(list.tasks);
+        await this.listModel.findOneAndDelete({ _id: list['_id'] });
+      });
+      // await this.listModel.deleteMany({ _id: { $in: lists } });
+    } catch (error) {
+      console.error(error);
     }
   }
 }

@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Res,
+} from '@nestjs/common';
 import { TableroService } from './tablero.service';
 import { Response } from 'express';
 import { TableroDTO } from './dto/tablero.dto';
@@ -42,5 +50,12 @@ export class TableroController {
       return res.status(HttpStatus.BAD_REQUEST).json();
     }
     return res.status(HttpStatus.OK).json(listsTablero);
+  }
+
+  @Delete(':id')
+  async deleteTablero(@Res() res: Response, @Param('id') tableroID: number) {
+    await this.tableroService.deleteTablero(tableroID);
+
+    return res.status(HttpStatus.OK).json();
   }
 }

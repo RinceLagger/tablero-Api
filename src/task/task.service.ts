@@ -46,13 +46,14 @@ export class TaskService {
     try {
       const { list } = await this.taskModel.findById(taskID);
       await this.taskModel.findOneAndDelete({ _id: taskID });
-      await this.listService.deleteTask(list, taskID);
+      await this.listService.deleteTaskFromList(list, taskID);
     } catch (error) {
       return null;
     }
   }
 
   async deleteTaskArray(tasks: Task[]) {
+    console.log(tasks);
     await this.taskModel.deleteMany({ _id: { $in: tasks } });
   }
 }

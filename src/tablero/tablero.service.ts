@@ -1,14 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tablero, TableroDocument } from './schema/tablero.schema';
 import { TableroDTO } from './dto/tablero.dto';
 import { List } from 'src/list/schema/list.schema';
+import { ListService } from 'src/list/list.service';
 
 @Injectable()
 export class TableroService {
   constructor(
     @InjectModel('Tablero') private tableroModel: Model<TableroDocument>,
+    @Inject(forwardRef(() => ListService))
+    private listService: ListService,
   ) {}
 
   async createTablero(tablero: TableroDTO): Promise<TableroDocument> | null {
@@ -79,6 +82,18 @@ export class TableroService {
         },
         { new: true },
       );
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async deleteTablero(tableroID: number): Promise<void> | null {
+    try {
+      const { lists } = await this.tableroModel
+        .findById(tableroID)
+        .populate('lists');
+      await this.tableroModel.findOneAndDelete({ _id: tableroID });
+      await this.listService.deleteListArray(lists);
     } catch (error) {
       return null;
     }

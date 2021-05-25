@@ -9,7 +9,7 @@ import { TaskModule } from 'src/task/task.module';
 @Module({
   imports: [
     forwardRef(() => TaskModule),
-    TableroModule,
+    forwardRef(() => TableroModule),
     MongooseModule.forFeature([{ name: 'List', schema: ListSchema }]),
   ],
   providers: [ListService],
