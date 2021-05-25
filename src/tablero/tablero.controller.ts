@@ -34,4 +34,13 @@ export class TableroController {
     }
     return res.status(HttpStatus.OK).json(tableroResponse);
   }
+
+  @Get(':id/lists')
+  async getListasTablero(@Res() res: Response, @Param('id') tableroID: number) {
+    const listsTablero = await this.tableroService.getListasTablero(tableroID);
+    if (listsTablero === null) {
+      return res.status(HttpStatus.BAD_REQUEST).json();
+    }
+    return res.status(HttpStatus.OK).json(listsTablero);
+  }
 }

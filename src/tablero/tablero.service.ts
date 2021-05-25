@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { TableroDocument } from './schema/tablero.schema';
 import { TableroDTO } from './dto/tablero.dto';
+import { List } from 'src/list/schema/list.schema';
 
 @Injectable()
 export class TableroService {
@@ -32,6 +33,17 @@ export class TableroService {
     try {
       const tablero = await this.tableroModel.findById(tableroID);
       return tablero;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async getListasTablero(tableroID: number): Promise<List[]> | null {
+    try {
+      const { lists } = await this.tableroModel
+        .findById(tableroID)
+        .populate('lists');
+      return lists;
     } catch (error) {
       return null;
     }
