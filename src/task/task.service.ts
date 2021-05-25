@@ -56,4 +56,18 @@ export class TaskService {
     console.log(tasks);
     await this.taskModel.deleteMany({ _id: { $in: tasks } });
   }
+
+  async updateTask(updateTask): Promise<TaskDocument> | null {
+    try {
+      const oldTask = await this.taskModel.findById(updateTask.taskID);
+      const updatedTask = Object.assign(oldTask, updateTask.task);
+      return await this.taskModel.findOneAndUpdate(
+        { _id: updateTask['taskID'] },
+        updatedTask,
+        { new: true },
+      );
+    } catch (error) {
+      return null;
+    }
+  }
 }

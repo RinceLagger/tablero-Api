@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
@@ -48,5 +49,16 @@ export class TaskController {
     await this.taskService.deleteTask(taskID);
 
     return res.status(HttpStatus.OK).json();
+  }
+  @Put()
+  async updateTask(
+    @Res() res: Response,
+    @Body() updateTask: { taskID: number; task: Partial<TaskDTO> },
+  ) {
+    const taskUpdated = await this.taskService.updateTask(updateTask);
+    if (taskUpdated === null) {
+      return res.status(HttpStatus.BAD_REQUEST).json();
+    }
+    return res.status(HttpStatus.OK).json(taskUpdated);
   }
 }
