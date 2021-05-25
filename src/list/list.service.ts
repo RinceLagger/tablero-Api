@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { TableroService } from 'src/tablero/tablero.service';
 import { ListDTO } from './dto/list.dto';
+import { Task } from 'src/task/schema/task.schema';
 
 @Injectable()
 export class ListService {
@@ -36,6 +37,15 @@ export class ListService {
     try {
       const list = await this.listModel.findById(listID);
       return list;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async getTasksList(listID: number): Promise<Task[]> | null {
+    try {
+      const { tasks } = await this.listModel.findById(listID).populate('tasks');
+      return tasks;
     } catch (error) {
       return null;
     }

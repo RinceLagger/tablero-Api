@@ -42,4 +42,13 @@ export class ListController {
     }
     return res.status(HttpStatus.OK).json(listResponse);
   }
+
+  @Get(':id/tasks')
+  async getListsTablero(@Res() res: Response, @Param('id') listID: number) {
+    const tasksList = await this.listService.getTasksList(listID);
+    if (tasksList === null) {
+      return res.status(HttpStatus.BAD_REQUEST).json();
+    }
+    return res.status(HttpStatus.OK).json(tasksList);
+  }
 }

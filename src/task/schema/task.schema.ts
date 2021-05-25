@@ -21,4 +21,4 @@ export class Task {
   list: List;
 }
 
-export const taskSchema = SchemaFactory.createForClass(Task);
+export const TaskSchema = SchemaFactory.createForClass(Task);
