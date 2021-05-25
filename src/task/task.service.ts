@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ListService } from 'src/list/list.service';
@@ -9,6 +9,7 @@ import { TaskDTO } from './dto/task.dto';
 export class TaskService {
   constructor(
     @InjectModel('Task') private taskModel: Model<TaskDocument>,
+    @Inject(forwardRef(() => ListService))
     private listService: ListService,
   ) {}
 

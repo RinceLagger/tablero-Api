@@ -12,5 +12,6 @@ import { TaskSchema } from './schema/task.schema';
   ],
   providers: [TaskService],
   controllers: [TaskController],
+  exports: [TaskService],
 })
 export class TaskModule {}
