@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ListDocument } from './schema/list.schema';
+import { List, ListDocument } from './schema/list.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { TableroService } from 'src/tablero/tablero.service';
@@ -61,6 +61,20 @@ export class ListService {
         { new: true },
       );
       return list;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async deleteTask(listID: List, taskID: number): Promise<void> | null {
+    try {
+      await this.listModel.findByIdAndUpdate(
+        listID,
+        {
+          $pull: { tasks: taskID },
+        },
+        { new: true },
+      );
     } catch (error) {
       return null;
     }

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -21,7 +22,7 @@ export class TaskController {
     if (taskResponse === null) {
       return res.status(HttpStatus.BAD_REQUEST).json();
     }
-    return res.status(HttpStatus.OK).json(taskResponse);
+    return res.status(HttpStatus.CREATED).json(taskResponse);
   }
 
   @Get()
@@ -40,5 +41,12 @@ export class TaskController {
       return res.status(HttpStatus.BAD_REQUEST).json();
     }
     return res.status(HttpStatus.OK).json(taskResponse);
+  }
+
+  @Delete(':id')
+  async deleteTask(@Res() res: Response, @Param('id') taskID: number) {
+    await this.taskService.deleteTask(taskID);
+
+    return res.status(HttpStatus.OK).json();
   }
 }

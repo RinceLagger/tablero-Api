@@ -32,10 +32,20 @@ export class TaskService {
     }
   }
 
-  async getTask(listID: number): Promise<TaskDocument> | null {
+  async getTask(taskID: number): Promise<TaskDocument> | null {
     try {
-      const task = await this.taskModel.findById(listID);
+      const task = await this.taskModel.findById(taskID);
       return task;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async deleteTask(taskID: number): Promise<void> | null {
+    try {
+      const { list } = await this.taskModel.findById(taskID);
+      await this.taskModel.findOneAndDelete({ _id: taskID });
+      this.listService.deleteTask(list, taskID);
     } catch (error) {
       return null;
     }
