@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 
 import { MongooseModule } from '@nestjs/mongoose';
 import { TableroModule } from './tablero/tablero.module';
+import { ListModule } from './list/list.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { TableroModule } from './tablero/tablero.module';
     MongooseModule.forRoot('mongodb://localhost:27017/tableroAPI', {
       useNewUrlParser: true,
     }),
+    ListModule,
   ],
   controllers: [AppController],
   providers: [AppService],

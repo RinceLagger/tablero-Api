@@ -10,5 +10,6 @@ import { TableroSchema } from './schema/tablero.schema';
   ],
   providers: [TableroService],
   controllers: [TableroController],
+  exports: [TableroService],
 })
 export class TableroModule {}
