@@ -82,4 +82,14 @@ export class ListService {
       return null;
     }
   }
+
+  async deleteList(listID: number): Promise<void> | null {
+    try {
+      const { tasks } = await this.listModel.findById(listID);
+      await this.listModel.findOneAndDelete({ _id: listID });
+      await this.taskService.deleteTaskArray(tasks);
+    } catch (error) {
+      return null;
+    }
+  }
 }

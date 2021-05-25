@@ -2,7 +2,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ListService } from 'src/list/list.service';
-import { TaskDocument } from './schema/task.schema';
+import { Task, TaskDocument } from './schema/task.schema';
 import { TaskDTO } from './dto/task.dto';
 
 @Injectable()
@@ -50,5 +50,9 @@ export class TaskService {
     } catch (error) {
       return null;
     }
+  }
+
+  async deleteTaskArray(tasks: Task[]) {
+    await this.taskModel.deleteMany({ _id: { $in: tasks } });
   }
 }

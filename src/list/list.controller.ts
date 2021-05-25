@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -50,5 +51,12 @@ export class ListController {
       return res.status(HttpStatus.BAD_REQUEST).json();
     }
     return res.status(HttpStatus.OK).json(tasksList);
+  }
+
+  @Delete(':id')
+  async deleteList(@Res() res: Response, @Param('id') listID: number) {
+    await this.listService.deleteList(listID);
+
+    return res.status(HttpStatus.OK).json();
   }
 }
