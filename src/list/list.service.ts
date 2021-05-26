@@ -110,12 +110,34 @@ export class ListService {
 
   async updateList(updateList): Promise<ListDocument> | null {
     try {
-      console.log(updateList)
       const oldList = await this.listModel.findById(updateList.listID);
       const updatedList = Object.assign(oldList, updateList.list);
       return await this.listModel.findOneAndUpdate(
         { _id: updateList['listID'] },
         updatedList,
+        { new: true },
+      );
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async changeTaskToOtherList(oldTask: Task, newListID: List) {
+    try {
+      const oldListID = oldTask.list;
+      const taskID = oldTask['_id'];
+      await this.listModel.findByIdAndUpdate(
+        oldListID,
+        {
+          $pull: { tasks: taskID },
+        },
+        { new: true },
+      );
+      await this.listModel.findByIdAndUpdate(
+        newListID,
+        {
+          $push: { tasks: taskID },
+        },
         { new: true },
       );
     } catch (error) {

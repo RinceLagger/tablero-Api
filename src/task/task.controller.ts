@@ -10,6 +10,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { List } from 'src/list/schema/list.schema';
 import { TaskDTO } from './dto/task.dto';
 import { TaskService } from './task.service';
 
@@ -56,6 +57,19 @@ export class TaskController {
     @Body() updateTask: { taskID: number; task: Partial<TaskDTO> },
   ) {
     const taskUpdated = await this.taskService.updateTask(updateTask);
+    if (taskUpdated === null) {
+      return res.status(HttpStatus.BAD_REQUEST).json();
+    }
+    return res.status(HttpStatus.OK).json(taskUpdated);
+  }
+
+  @Put('changeList')
+  async changeTaskList(
+    @Res() res: Response,
+    @Body() newData: { taskID: number; newListID: List },
+  ) {
+    const taskUpdated = await this.taskService.changeTaskList(newData);
+
     if (taskUpdated === null) {
       return res.status(HttpStatus.BAD_REQUEST).json();
     }

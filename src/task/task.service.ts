@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ListService } from 'src/list/list.service';
 import { Task, TaskDocument } from './schema/task.schema';
 import { TaskDTO } from './dto/task.dto';
+import { List } from 'src/list/schema/list.schema';
 
 @Injectable()
 export class TaskService {
@@ -64,6 +65,20 @@ export class TaskService {
       return await this.taskModel.findOneAndUpdate(
         { _id: updateTask['taskID'] },
         updatedTask,
+        { new: true },
+      );
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async changeTaskList(newData: { taskID: number; newListID: List }) {
+    try {
+      const oldTask = await this.taskModel.findById(newData.taskID);
+      await this.listService.changeTaskToOtherList(oldTask, newData.newListID);
+      return await this.taskModel.findByIdAndUpdate(
+        newData['taskID'],
+        { list: newData['newListID'] },
         { new: true },
       );
     } catch (error) {
