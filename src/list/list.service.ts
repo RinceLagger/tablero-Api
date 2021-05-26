@@ -107,4 +107,19 @@ export class ListService {
       console.error(error);
     }
   }
+
+  async updateList(updateList): Promise<ListDocument> | null {
+    try {
+      console.log(updateList)
+      const oldList = await this.listModel.findById(updateList.listID);
+      const updatedList = Object.assign(oldList, updateList.list);
+      return await this.listModel.findOneAndUpdate(
+        { _id: updateList['listID'] },
+        updatedList,
+        { new: true },
+      );
+    } catch (error) {
+      return null;
+    }
+  }
 }

@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Res,
 } from '@nestjs/common';
 import { TableroService } from './tablero.service';
@@ -57,5 +58,19 @@ export class TableroController {
     await this.tableroService.deleteTablero(tableroID);
 
     return res.status(HttpStatus.OK).json();
+  }
+
+  @Put()
+  async updateTablero(
+    @Res() res: Response,
+    @Body() updateTablero: { tableroID: number; tablero: Partial<TableroDTO> },
+  ) {
+    const tableroUpdated = await this.tableroService.updateTablero(
+      updateTablero,
+    );
+    if (tableroUpdated === null) {
+      return res.status(HttpStatus.BAD_REQUEST).json();
+    }
+    return res.status(HttpStatus.OK).json(tableroUpdated);
   }
 }

@@ -98,4 +98,20 @@ export class TableroService {
       return null;
     }
   }
+
+  async updateTablero(updateTablero): Promise<TableroDocument> | null {
+    try {
+      const oldTablero = await this.tableroModel.findById(
+        updateTablero.tableroID,
+      );
+      const updatedTablero = Object.assign(oldTablero, updateTablero.tablero);
+      return await this.tableroModel.findOneAndUpdate(
+        { _id: updateTablero['tableroID'] },
+        updatedTablero,
+        { new: true },
+      );
+    } catch (error) {
+      return null;
+    }
+  }
 }

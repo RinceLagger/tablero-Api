@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Res,
 } from '@nestjs/common';
 
@@ -58,5 +59,17 @@ export class ListController {
     await this.listService.deleteList(listID);
 
     return res.status(HttpStatus.OK).json();
+  }
+
+  @Put()
+  async updateList(
+    @Res() res: Response,
+    @Body() updateList: { listID: number; list: Partial<ListDTO> },
+  ) {
+    const listUpdated = await this.listService.updateList(updateList);
+    if (listUpdated === null) {
+      return res.status(HttpStatus.BAD_REQUEST).json();
+    }
+    return res.status(HttpStatus.OK).json(listUpdated);
   }
 }
